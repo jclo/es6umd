@@ -1,0 +1,63 @@
+{
+  "name": "es6umd",
+  "version": "0.1.0",
+  "description": "A template for writing micro ES6 Javascript libraries",
+  "main": "_dist/es6umd.js",
+  "scripts": {
+    "build": "gulp",
+    "watch": "gulp watch",
+    "test": "istanbul cover -x ./test/main.js _mocha -- -R spec ./test/main.js --compilers js:babel/register",
+    "check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "display-coverage": "open ./coverage/lcov-report/index.html",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jclo/es6umd.git"
+  },
+  "keywords": [
+    "javascript",
+    "ES6",
+    "UMD",
+    "library",
+    "template",
+    "boilerplate"
+  ],
+  "author": "jclo <jc006@wanadoo.fr>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jclo/es6umd/issues"
+  },
+  "homepage": "https://github.com/jclo/es6umd",
+  "devDependencies": {
+    "babel": "5.8.23",
+    "babelify": "6.3.0",
+    "browserify": "11.2.0",
+    "chai": "3.3.0",
+    "coveralls": "2.11.4",
+    "del": "2.0.2",
+    "ghooks": "0.3.2",
+    "gulp": "3.9.0",
+    "gulp-header": "1.7.1",
+    "gulp-replace": "0.5.4",
+    "gulp-sourcemaps": "1.6.0",
+    "gulp-util": "3.0.6",
+    "istanbul": "0.3.21",
+    "mocha": "2.3.3",
+    "vinyl-buffer": "1.0.0",
+    "vinyl-source-stream": "1.1.0",
+    "watchify": "3.4.0"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run test && npm run check-coverage"
+    }
+  },
+  "browser": {},
+  "browserify-shim": {},
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  }
+}

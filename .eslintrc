@@ -1,0 +1,32 @@
+{
+  /**
+   * Set JavaScript language options
+   */
+  "ecmaFeatures": {
+    "modules": true
+  },
+  /**
+   * Set Environnement
+   */
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  /**
+   * Set globals
+   */
+  "globals": {      
+  },
+  /**
+   * Set rules
+   */
+  "extends": "eslint:recommended",
+  "rules": {
+    // Stylistic
+    "indent": [1, 2, {"SwitchCase": 1, "VariableDeclarator": 2}],
+    "quotes": [1, "single"],
+    "no-underscore-dangle": 0,
+    // Legacy
+    "max-len": [1, 80, 2]
+  }
+}
