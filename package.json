@@ -1,6 +1,6 @@
 {
   "name": "es6umd",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A template for writing micro ES6 Javascript libraries",
   "main": "_dist/es6umd.js",
   "scripts": {
@@ -16,7 +16,6 @@
     "url": "https://github.com/jclo/es6umd.git"
   },
   "keywords": [
-    "javascript",
     "ES6",
     "UMD",
     "library",
