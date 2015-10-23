@@ -1,10 +1,10 @@
 {
   "name": "es6umd",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A template for writing micro ES6 Javascript libraries",
   "main": "_dist/es6umd.js",
   "scripts": {
-    "build": "gulp",
+    "build": "gulp browserify",
     "watch": "gulp watch",
     "test": "istanbul cover -x ./test/main.js _mocha -- -R spec ./test/main.js --compilers js:babel/register",
     "check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
@@ -22,7 +22,7 @@
     "template",
     "boilerplate"
   ],
-  "author": "jclo <jc006@wanadoo.fr>",
+  "author": "jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jclo/es6umd/issues"

@@ -1,5 +1,12 @@
 ### HEAD
 
+### 0.1.2 (October 23, 2015)
+
+  * Updated email address,
+  * Improved gulfile.js script,
+  * Added comment headers to js functions.
+
+
 ### 0.1.1 (October 16, 2015)
 
  * Completed .eslintrc stylistic rules,

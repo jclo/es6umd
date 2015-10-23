@@ -3,7 +3,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 jclo
+ * Copyright (c) 2015 jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr/)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  * ***************************************************************************/
-/*eslint-env node */
-/* eslint no-mixed-requires: 1 */
+/* eslint-env node */
+/* eslint */
 'use strict';
 
 // -- Node modules
@@ -54,7 +54,7 @@ var license = ['/**',
 ' * ' + name + ' v' + release,
 ' *',
 ' * ' + name + ' is ...',
-' * Copyright (c) 2015 jclo (...).',
+' * Copyright (c) 2015 John Doe <jdo@johndoe.com> (http://www.johndoe.com).',
 ' * Released under the MIT license. You may obtain a copy of the License',
 ' * at: http://www.opensource.org/licenses/mit-license.php).',
 ' */',
@@ -77,62 +77,70 @@ gulp.task('create', ['remove'], function() {
 
 // Browserify.
 gulp.task('browserify', ['create'], function() {
-  var bundler = browserify(srcfile, {debug: debug, standalone: exportname });
+  var b
+    ;
 
-  function bundle() {
-    return bundler
-      .bundle()
+  // Set up the browserify instance.
+  b = browserify({ entries: srcfile, debug: debug, standalone: exportname });
+
+  return b.bundle()
+    // Log errors if they happen.
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source(name + '.js'))
+    // Optionnal, remove if you don't want sourcemaps.
+    .pipe(buffer())
+    // Load map from browserify file.
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    // Add transformation tasks to the pipeline here.
+    //.pipe(uglify())
+    .pipe(header(license))
+    .pipe(replace('@#Release#@', release))
+    // Write .map file.
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(dist))
+    ;
+});
+
+// Watch.
+gulp.task('watch', function() {
+  var b
+    ;
+
+  // Set up the watchify instance.
+  b = watchify(browserify(
+    {
+      entries:    [srcfile],
+      debug:      debug,
+      standalone: exportname
+    },
+    watchify.args
+  ));
+
+  function build() {
+    b.bundle()
       // Log errors if they happen.
       .on('error', gutil.log.bind(gutil, 'Browserify Error'))
       .pipe(source(name + '.js'))
       // Optionnal, remove if you don't want sourcemaps.
       .pipe(buffer())
       // Load map from browserify file.
-      .pipe(sourcemaps.init({loadMaps: false}))
+      .pipe(sourcemaps.init({ loadMaps: true }))
       // Add transformation tasks to the pipeline here.
       //.pipe(uglify())
       .pipe(header(license))
       .pipe(replace('@#Release#@', release))
       // Write .map file.
       .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest(dist));
+      .pipe(gulp.dest(dist))
+      ;
   }
 
-  return bundle();
+  // On any update, run the bundler and output build logs to the terminal.
+  b.on('update', build);
+  b.on('log', gutil.log);
 
-});
-
-// Watch.
-gulp.task('watch', function() {
-  var bundler = watchify(browserify({ entries: [srcfile], debug: debug, standalone: exportname }, watchify.args));
-
-  function bundle() {
-    return bundler
-      .bundle()
-      // Log errors if they happen.
-      .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-      .pipe(source(name + '.js'))
-      // Optionnal, remove if you don't want sourcemaps.
-      .pipe(buffer())
-      // Load map from browserify file.
-      .pipe(sourcemaps.init({loadMaps: false}))
-      // Add transformation tasks to the pipeline here.
-        //.pipe(uglify())
-      .pipe(header(license))
-      .pipe(replace('@#Release#@', release))
-      // write .map file.
-      .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest(dist));
-  }
-
-  // On any update, run the bundler and output
-  // build logs to the terminal.
-  bundler.on('update', bundle);
-  bundler.on('log', gutil.log);
-
-  return bundle();
-
+  return build();
 });
 
 // The default task (called when you run `gulp` from cli).
-gulp.task('default', ['remove', 'create', 'browserify']);
+gulp.task('default', []);
