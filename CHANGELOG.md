@@ -1,5 +1,10 @@
 ### HEAD
 
+### 0.1.4 (October 30, 2015)
+
+  * Reinstalled the previous package babelify due to a compatibility issue.
+
+
 ### 0.1.3 (October 30, 2015)
 
   * Made the command npm run display-coverage cross-platform,
