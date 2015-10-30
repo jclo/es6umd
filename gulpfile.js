@@ -102,7 +102,7 @@ gulp.task('browserify', ['create'], function() {
 });
 
 // Watch.
-gulp.task('watch', function() {
+gulp.task('watchify', function() {
   var b
     ;
 
@@ -142,5 +142,7 @@ gulp.task('watch', function() {
   return build();
 });
 
-// The default task (called when you run `gulp` from cli).
+// Gulp tasks (called when you run `gulp` from cli).
+gulp.task('build', ['browserify']);
+gulp.task('watch', ['watchify']);
 gulp.task('default', []);
