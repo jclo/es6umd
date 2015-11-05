@@ -1,2 +1,2 @@
-import es6umd from './lib/es6umd';
+import es6umd from './lib/main';
 export default es6umd;

@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.2.0 (November 5, 2015)
+
+  * Added a CLI script that creates the UMD library skeleton,
+  * Renamed lib/es6umd.js to lib/main.js to avoid confusion with CLI script.
+
+
 ### 0.1.4 (October 30, 2015)
 
   * Reinstalled the previous package babelify due to a compatibility issue.

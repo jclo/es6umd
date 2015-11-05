@@ -1,6 +1,6 @@
 {
   "name": "es6umd",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "A template for writing micro ES6 Javascript libraries",
   "main": "_dist/es6umd.js",
   "scripts": {
@@ -43,7 +43,9 @@
     "gulp-util": "3.0.7",
     "istanbul": "0.4.0",
     "mocha": "2.3.3",
+    "nopt": "3.0.4",
     "opener": "1.4.1",
+    "path": "0.12.7",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
     "watchify": "3.6.0"
