@@ -261,9 +261,6 @@ function _populate(opts) {
   // Ok. Populate it.
   console.log('Populates the folder with:');
 
-  // README.md LICENSE.md, CHANGELOG.md, index.js, .eslintrc, .gitignore, .travis.yml
-  // folders test & lib
-
   // Create README.md, LICENSE.md, CHANGELOG.md
   console.log('  ' + 'README.md');
   fs.writeFileSync(path.join(baseapp, 'README.md'), readme);
