@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.2.3 (January 18, 2016)
+
+  * Updated dependencies,
+  * Updated copyright date.
+
+
 ### 0.2.2 (December 11, 2015)
 
   * Updated dependencies.
