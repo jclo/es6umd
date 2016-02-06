@@ -169,12 +169,20 @@ function _customizeApp(baseumdlib, baseapp, appname) {
   obj.main = '_dist/' + appname.toLowerCase() + '.js';
   obj.repository.url = 'https://github.com/author/libname.git';
   obj.keywords = ['to be filled'];
-  obj.author = 'John Doe <jdo@johndoe.com> (http://www.johndoe.com)';
+  obj.author.name = 'John Doe';
+  obj.author.email = 'jdo@johndoe.com';
+  obj.author.url = 'http://www.johndoe.com';
   obj.bugs.url = 'https://github.com/author/libname/issues';
   obj.homepage = 'https://github.com/author/libname';
-  delete obj.devDependencies.bin;
-  delete obj.devDependencies.nopt;
-  delete obj.devDependencies.path;
+  delete obj.bin;
+  delete obj.dependencies.nopt;
+  delete obj.dependencies.path;
+  delete obj.readme;
+  delete obj.readmeFilename;
+  delete obj.gitHead;
+  delete obj._id;
+  delete obj._shasum;
+  delete obj._from;
 
   console.log('  ' + npm);
   fs.writeFileSync(path.join(baseapp, npm), JSON.stringify(obj, null, 2));
@@ -275,7 +283,8 @@ function _populate(opts) {
   console.log('  ' + '.eslintrc');
   _copyFile(path.join(baselib, '.eslintrc'), path.join(baseapp, '.eslintrc'));
   console.log('  ' + '.gitignore');
-  _copyFile(path.join(baselib, '.gitignore'), path.join(baseapp, '.gitignore'));
+  //_copyFile(path.join(baselib, '.gitignore'), path.join(baseapp, '.gitignore'));
+  fs.closeSync(fs.openSync('.gitignore', 'w'));
   console.log('  ' + '.travis.yml');
   _copyFile(path.join(baselib, '.travis.yml'), path.join(baseapp, '.travis.yml'));
   console.log('  ' + 'gulpfile.js');

@@ -1,7 +1,10 @@
 {
   "name": "es6umd",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A template for writing micro ES6 Javascript libraries",
+  "bin": {
+    "umdlib": "./bin/es6umd.js"
+  },
   "main": "_dist/es6umd.js",
   "scripts": {
     "build": "gulp build",
@@ -22,12 +25,20 @@
     "template",
     "boilerplate"
   ],
-  "author": "jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr/)",
+  "author": {
+    "name": "jclo",
+    "email": "jclo@mobilabs.fr",
+    "url": "http://www.mobilabs.fr/"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jclo/es6umd/issues"
   },
   "homepage": "https://github.com/jclo/es6umd",
+  "dependencies": {
+    "nopt": "3.0.6",
+    "path": "0.12.7"
+  },
   "devDependencies": {
     "babel": "5.8.23",
     "babelify": "6.3.0",
@@ -43,9 +54,7 @@
     "gulp-util": "3.0.7",
     "istanbul": "0.4.2",
     "mocha": "2.3.4",
-    "nopt": "3.0.6",
     "opener": "1.4.1",
-    "path": "0.12.7",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
     "watchify": "3.7.0"

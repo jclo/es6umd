@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.2.4 (February 6, 2016)
+
+  * Moved nopt and path packages from devDependencies to dependencies.
+  * Improved script bin/es6umd.js.
+
+
 ### 0.2.3 (January 18, 2016)
 
   * Updated dependencies,
