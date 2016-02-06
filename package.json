@@ -1,9 +1,9 @@
 {
   "name": "es6umd",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A template for writing micro ES6 Javascript libraries",
   "bin": {
-    "umdlib": "./bin/es6umd.js"
+    "es6umd": "./bin/es6umd.js"
   },
   "main": "_dist/es6umd.js",
   "scripts": {

@@ -1,5 +1,10 @@
 ### HEAD
 
+### 0.2.5 (February 6, 2016)
+
+  * Fix a typo in package.json.
+
+
 ### 0.2.4 (February 6, 2016)
 
   * Moved nopt and path packages from devDependencies to dependencies.
