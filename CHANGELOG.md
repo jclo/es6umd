@@ -1,5 +1,10 @@
 ### HEAD
 
+### 0.2.6 (February 26, 2016)
+
+  * Updated dependencies.
+
+
 ### 0.2.5 (February 6, 2016)
 
   * Fix a typo in package.json.
