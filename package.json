@@ -1,6 +1,6 @@
 {
   "name": "es6umd",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A template for writing micro ES6 Javascript libraries",
   "bin": {
     "es6umd": "./bin/es6umd.js"
@@ -40,19 +40,19 @@
     "path": "0.12.7"
   },
   "devDependencies": {
-    "babel": "5.8.23",
+    "babel": "5.8.38",
     "babelify": "6.3.0",
     "browserify": "13.0.0",
     "chai": "3.5.0",
-    "coveralls": "2.11.6",
+    "coveralls": "2.11.9",
     "del": "2.2.0",
-    "ghooks": "1.0.3",
+    "ghooks": "1.2.1",
     "gulp": "3.9.1",
     "gulp-header": "1.7.1",
     "gulp-replace": "0.5.4",
     "gulp-sourcemaps": "1.6.0",
     "gulp-util": "3.0.7",
-    "istanbul": "0.4.2",
+    "istanbul": "0.4.3",
     "mocha": "2.4.5",
     "opener": "1.4.1",
     "vinyl-buffer": "1.0.0",

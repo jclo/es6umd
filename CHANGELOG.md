@@ -1,5 +1,10 @@
 ### HEAD
 
+### 0.2.7 (April 22, 2016)
+
+  * Updated dependencies.
+
+
 ### 0.2.6 (February 26, 2016)
 
   * Updated dependencies.
