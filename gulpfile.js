@@ -26,6 +26,7 @@
 /* xxxeslint-env node */
 /* eslint one-var: 0, object-shorthand: 0 */
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
+/* eslint prefer-arrow-callback: 0 */
 /* eslint strict: 0 */
 'use strict';
 
@@ -67,18 +68,18 @@ const license = ['/**',
 // -- Gulp Tasks
 
 // Remove the previous '_dist'.
-gulp.task('remove', () => {
+gulp.task('remove', function() {
   del.sync([dist]);
 });
 
 // Create './dist' and populate it.
-gulp.task('create', ['remove'], () =>
-  gulp.src(['./*.md'])
-    .pipe(gulp.dest(dist))
-);
+gulp.task('create', ['remove'], function() {
+  return gulp.src(['./*.md'])
+    .pipe(gulp.dest(dist));
+});
 
 // Browserify.
-gulp.task('browserify', ['create'], () => {
+gulp.task('browserify', ['create'], function() {
   // Set up the browserify instance.
   const b = browserify({ entries: srcfile, debug: debug, standalone: exportname });
 
@@ -101,7 +102,7 @@ gulp.task('browserify', ['create'], () => {
 });
 
 // Watch.
-gulp.task('watchify', () => {
+gulp.task('watchify', function() {
   // Set up the watchify instance.
   const b = watchify(browserify(
     {

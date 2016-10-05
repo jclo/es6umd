@@ -3,7 +3,7 @@
 ### 0.3.x (October 5, 2016)
 
   * Added 'use strict' to gulpfile.js,
-  * ...,
+  * Removed fat arrows in gulpfile.js as they aren't supported by Travis CI yet.
 
 
 ### 0.3.0 (October 5, 2016)
