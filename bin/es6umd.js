@@ -25,41 +25,42 @@
  * THE SOFTWARE.
  * ***************************************************************************/
 /* eslint-env node */
-/* eslint curly: 0, no-console: 0, max-len: [1, 110, 2] */
+/* eslint one-var: 0, object-shorthand: 0, no-console: 0, max-len: [1, 110, 2] */
+/* eslint strict: 0 */
 'use strict';
 
 // -- Node modules
-var fs      = require('fs')
-  , nopt    = require('nopt')
-  , path    = require('path')
-  ;
+const fs      = require('fs')
+    , nopt    = require('nopt')
+    , path    = require('path')
+    ;
 
 // -- Global variables
-var baseapp        = process.cwd()
-  , baselib        = __dirname.replace('/bin', '')
-  , version        = require('../package.json').version
-  , lib            = 'lib'
-  , test           = 'test'
+const baseapp = process.cwd()
+    , baselib = __dirname.replace('/bin', '')
+    , version = require('../package.json').version
+    , lib     = 'lib'
+    , test    = 'test'
     // Command line Options
   , opts = {
-    help:       [Boolean, false],
-    version:    [String, null],
+    help: [Boolean, false],
+    version: [String, null],
     collection: [Boolean, false],
-    path:       path,
-    name:       [String, null]
+    path: path,
+    name: [String, null],
   }
   , shortOpts = {
     h: ['--help'],
     v: ['--version', version],
     c: ['--collection'],
     p: ['--path'],
-    n: ['--name']
+    n: ['--name'],
   }
   , parsed = nopt(opts, shortOpts, process.argv, 2)
   ;
 
 // -- Templates
-var readme = [
+const readme = [
   '# MyApp',
   ' ',
   'Bla bla ...',
@@ -69,7 +70,7 @@ var readme = [
   'MIT.',
   ''].join('\n');
 
-var license = [
+const license = [
   'The MIT License (MIT)',
   '',
   'Copyright (c) 2016 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
@@ -93,7 +94,7 @@ var license = [
   'THE SOFTWARE.',
   ''].join('\n');
 
-var changelog = [
+const changelog = [
   '### HEAD',
   '',
   '',
@@ -103,8 +104,8 @@ var changelog = [
   ''].join('\n');
 
 
-// -- Private functions
-// -- Private functions
+// -- Private functions --------------------------------------------------------
+/* eslint-disable no-underscore-dangle */
 
 /**
  * Removes the cached files and returns the array.
@@ -115,15 +116,13 @@ var changelog = [
  * @returns {Array}   returns the filtered array,
  */
 function _filter(files) {
-  var filtered
-    , i
-    ;
+  const filtered = [];
 
-  filtered = [];
-  for (i = 0; i < files.length; i++)
-    if (files[i].match(/^\./) === null)
+  for (let i = 0; i < files.length; i++) {
+    if (files[i].match(/^\./) === null) {
       filtered.push(files[i]);
-
+    }
+  }
   return filtered;
 }
 
@@ -150,23 +149,21 @@ function _copyFile(source, dest) {
  * @param {String}    the name of the UMD library,
  * @returns {}        -,
  */
-function _customizeApp(baseumdlib, baseapp, appname) {
-  var npm   = 'package.json'
-    , json
-    , obj
-    ;
+function _customizeApp(baseumdlib, baseApp, appname) {
+  const npm   = 'package.json';
 
   // Rework package.json
-  json = fs.readFileSync(path.join(baseumdlib, npm), 'utf8', function (error) {
-    if (error)
+  const json = fs.readFileSync(path.join(baseumdlib, npm), 'utf8', (error) => {
+    if (error) {
       throw error;
+    }
   });
 
-  obj = JSON.parse(json);
+  const obj = JSON.parse(json);
   obj.name = appname.toLowerCase();
   obj.version = '0.0.0';
-  obj.description = appname + ' ...';
-  obj.main = '_dist/' + appname.toLowerCase() + '.js';
+  obj.description = `${appname} ...`;
+  obj.main = `_dist/${appname.toLowerCase()}.js`;
   obj.repository.url = 'https://github.com/author/libname.git';
   obj.keywords = ['to be filled'];
   obj.author.name = 'John Doe';
@@ -184,9 +181,8 @@ function _customizeApp(baseumdlib, baseapp, appname) {
   delete obj._shasum;
   delete obj._from;
 
-  console.log('  ' + npm);
-  fs.writeFileSync(path.join(baseapp, npm), JSON.stringify(obj, null, 2));
-
+  console.log(`  ${npm}`);
+  fs.writeFileSync(path.join(baseApp, npm), JSON.stringify(obj, null, 2));
 }
 
 /**
@@ -199,20 +195,17 @@ function _customizeApp(baseumdlib, baseapp, appname) {
  * @returns {}        -,
  */
 function _copyRecursiveSync(source, dest) {
-  var files
-    , i
-    ;
-
   if (fs.statSync(source).isDirectory()) {
     fs.mkdirSync(dest);
-    files = _filter(fs.readdirSync(source));
-    for (i = 0; i < files.length; i++) {
-      if (fs.statSync(source + '/' + files[i]).isDirectory()) {
-        console.log('  ' + 'Add folder: ' + files[i]);
-        _copyRecursiveSync(source + '/' + files[i], dest + '/' + files[i]);
+    const files = _filter(fs.readdirSync(source));
+    for (let i = 0; i < files.length; i++) {
+      if (fs.statSync(`${source}/${files[i]}`).isDirectory()) {
+        console.log(`  Add folder: ${files[i]}`);
+        _copyRecursiveSync(`${source}/${files[i]}`, `${dest}/${files[i]}`);
       } else {
-        console.log('  ' + 'Add file: ' + files[i]);
-        _copyFile(source + '/' + files[i], dest + '/' + files[i]);
+        // console.log('  ' + 'Add file: ' + files[i]);
+        console.log(`  Add folder: ${files[i]}`);
+        _copyFile(`${source}/${files[i]}`, `${dest}/${files[i]}`);
       }
     }
   } else {
@@ -227,8 +220,7 @@ function _copyRecursiveSync(source, dest) {
  * @private
  */
 function _help() {
-
-  var message = ['',
+  const message = ['',
     'Usage: command [options]',
     '',
     'populate            populate the app',
@@ -238,7 +230,7 @@ function _help() {
     '-h, --help          output usage information',
     '-v, --version       output the version number',
     '-n, --name          the name of the app',
-    ''
+    '',
   ].join('\n');
 
   console.log(message);
@@ -253,14 +245,12 @@ function _help() {
  * @param {Object}    the command line options,
  * @returns {}        -,
  */
-function _populate(opts) {
-  var app = opts.name || 'myApp'
-    , files
-    ;
+function _populate(options) {
+  const app = options.name || 'myApp';
 
   // Check that the folder app is empty.
   console.log('Checks that the folder app is empty...');
-  files = _filter(fs.readdirSync(baseapp));
+  const files = _filter(fs.readdirSync(baseapp));
   if (files.length > 1 || (files[0] !== undefined && files[0] !== 'node_modules')) {
     console.log('This folder already contains files and/or folders. Clean it up first! Process aborted...');
     process.exit(1);
@@ -270,24 +260,24 @@ function _populate(opts) {
   console.log('Populates the folder with:');
 
   // Create README.md, LICENSE.md, CHANGELOG.md
-  console.log('  ' + 'README.md');
+  console.log('  README.md');
   fs.writeFileSync(path.join(baseapp, 'README.md'), readme);
-  console.log('  ' + 'LICENSE.md');
+  console.log('  LICENSE.md');
   fs.writeFileSync(path.join(baseapp, 'LICENSE.md'), license);
-  console.log('  ' + 'CHANGELOG.md');
+  console.log('  CHANGELOG.md');
   fs.writeFileSync(path.join(baseapp, 'CHANGELOG.md'), changelog);
 
   // Add index.js, .eslintrc, .gitignore, .travis.yml and gulfile.js
-  console.log('  ' + 'index.js');
+  console.log('  index.js');
   _copyFile(path.join(baselib, 'index.js'), path.join(baseapp, 'index.js'));
-  console.log('  ' + '.eslintrc');
+  console.log('  .eslintrc');
   _copyFile(path.join(baselib, '.eslintrc'), path.join(baseapp, '.eslintrc'));
-  console.log('  ' + '.gitignore');
-  //_copyFile(path.join(baselib, '.gitignore'), path.join(baseapp, '.gitignore'));
+  console.log('  .gitignore');
+  // _copyFile(path.join(baselib, '.gitignore'), path.join(baseapp, '.gitignore'));
   fs.closeSync(fs.openSync('.gitignore', 'w'));
-  console.log('  ' + '.travis.yml');
+  console.log('  .travis.yml');
   _copyFile(path.join(baselib, '.travis.yml'), path.join(baseapp, '.travis.yml'));
-  console.log('  ' + 'gulpfile.js');
+  console.log('  gulpfile.js');
   _copyFile(path.join(baselib, 'gulpfile.js'), path.join(baseapp, 'gulpfile.js'));
 
   // Add the package.json and remove ES6UMD dependencies.
@@ -298,21 +288,20 @@ function _populate(opts) {
   _copyRecursiveSync(path.join(baselib, lib), path.join(baseapp, lib));
   _copyRecursiveSync(path.join(baselib, test), path.join(baseapp, test));
   console.log('Done. Enjoy!');
-
 }
 
 
 // -- Main
-if (parsed.help)
+if (parsed.help) {
   _help();
-
+}
 if (parsed.version) {
-  console.log('es6umd version: ' + parsed.version);
+  console.log(`es6umd version: ${parsed.version}`);
   process.exit(0);
 }
 
-if (parsed.argv.remain[0] === 'populate')
+if (parsed.argv.remain[0] === 'populate') {
   _populate(parsed);
-
-else
+} else {
   _help();
+}

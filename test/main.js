@@ -1,22 +1,22 @@
 /* global describe, it */
-import {expect} from 'chai';
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
+import { expect } from 'chai';
 import UMDLib from '../index.js';
 
-describe('UMDLib', function() {
-  var umdlib = new UMDLib();
+describe('UMDLib', () => {
+  const umdlib = new UMDLib();
 
   // Test the first 'method'.
-  describe('The method getArray():', function() {
-    it ('Expects the method to return an array.', function() {
+  describe('The method getArray():', () => {
+    it('Expects the method to return an array.', () => {
       expect(umdlib.getArray()).to.be.a('array');
     });
   });
 
   // Test the second 'method'.
-  describe('The method getString():', function() {
-    it ('Expects the method to return a string.', function() {
+  describe('The method getString():', () => {
+    it('Expects the method to return a string.', () => {
       expect(umdlib.getString()).to.be.a('string');
     });
   });
-
 });

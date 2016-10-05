@@ -23,37 +23,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  * ***************************************************************************/
-/* eslint-env node */
-/* eslint */
-'use strict';
+/* xxxeslint-env node */
+/* eslint one-var: 0, object-shorthand: 0 */
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
+// 'use strict';
 
 // -- Node modules
-var browserify = require('browserify')
-  , del        = require('del')
-  , gulp       = require('gulp')
-  , header     = require('gulp-header')
-  , replace    = require('gulp-replace')
-  , sourcemaps = require('gulp-sourcemaps')
-  , gutil      = require('gulp-util')
-  , buffer     = require('vinyl-buffer')
-  , source     = require('vinyl-source-stream')
-  , watchify   = require('watchify')
-  ;
+const browserify = require('browserify')
+    , del        = require('del')
+    , gulp       = require('gulp')
+    , header     = require('gulp-header')
+    , replace    = require('gulp-replace')
+    , sourcemaps = require('gulp-sourcemaps')
+    , gutil      = require('gulp-util')
+    , buffer     = require('vinyl-buffer')
+    , source     = require('vinyl-source-stream')
+    , watchify   = require('watchify')
+    ;
 
 // -- Local declarations
-var name       = require('./package.json').name.toLowerCase()
-  , release    = require('./package.json').version
-  , srcfile    = './index.js'
-  , dist       = './_dist'
-  , exportname = 'UMDLib'	// Name to expose outside the lib.
-  , debug      = true
-  ;
+const name       = require('./package.json').name.toLowerCase()
+    , release    = require('./package.json').version
+    , srcfile    = './index.js'
+    , dist       = './_dist'
+    , exportname = 'UMDLib' // Name to expose outside the lib.
+    , debug      = true
+    ;
 
 // License
-var license = ['/**',
-' * ' + name + ' v' + release,
+const license = ['/**',
+` * ${name} v${release}`,
 ' *',
-' * ' + name + ' is ...',
+` * ${name} is ...`,
 ' * Copyright (c) 2016 John Doe <jdo@johndoe.com> (http://www.johndoe.com).',
 ' * Released under the MIT license. You may obtain a copy of the License',
 ' * at: http://www.opensource.org/licenses/mit-license.php).',
@@ -65,34 +66,31 @@ var license = ['/**',
 // -- Gulp Tasks
 
 // Remove the previous '_dist'.
-gulp.task('remove', function() {
+gulp.task('remove', () => {
   del.sync([dist]);
 });
 
 // Create './dist' and populate it.
-gulp.task('create', ['remove'], function() {
-  return gulp.src(['./*.md'])
-    .pipe(gulp.dest(dist));
-});
+gulp.task('create', ['remove'], () =>
+  gulp.src(['./*.md'])
+    .pipe(gulp.dest(dist))
+);
 
 // Browserify.
-gulp.task('browserify', ['create'], function() {
-  var b
-    ;
-
+gulp.task('browserify', ['create'], () => {
   // Set up the browserify instance.
-  b = browserify({ entries: srcfile, debug: debug, standalone: exportname });
+  const b = browserify({ entries: srcfile, debug: debug, standalone: exportname });
 
   return b.bundle()
     // Log errors if they happen.
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source(name + '.js'))
+    .pipe(source(`${name}.js`))
     // Optionnal, remove if you don't want sourcemaps.
     .pipe(buffer())
     // Load map from browserify file.
     .pipe(sourcemaps.init({ loadMaps: true }))
     // Add transformation tasks to the pipeline here.
-    //.pipe(uglify())
+    // .pipe(uglify())
     .pipe(header(license))
     .pipe(replace('@#Release#@', release))
     // Write .map file.
@@ -102,16 +100,13 @@ gulp.task('browserify', ['create'], function() {
 });
 
 // Watch.
-gulp.task('watchify', function() {
-  var b
-    ;
-
+gulp.task('watchify', () => {
   // Set up the watchify instance.
-  b = watchify(browserify(
+  const b = watchify(browserify(
     {
-      entries:    [srcfile],
-      debug:      debug,
-      standalone: exportname
+      entries: [srcfile],
+      debug: debug,
+      standalone: exportname,
     },
     watchify.args
   ));
@@ -120,13 +115,13 @@ gulp.task('watchify', function() {
     b.bundle()
       // Log errors if they happen.
       .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-      .pipe(source(name + '.js'))
+      .pipe(source(`${name}.js`))
       // Optionnal, remove if you don't want sourcemaps.
       .pipe(buffer())
       // Load map from browserify file.
       .pipe(sourcemaps.init({ loadMaps: true }))
       // Add transformation tasks to the pipeline here.
-      //.pipe(uglify())
+      // .pipe(uglify())
       .pipe(header(license))
       .pipe(replace('@#Release#@', release))
       // Write .map file.
