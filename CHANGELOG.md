@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.3.x (October 5, 2016)
+
+  * Added 'use strict' to gulpfile.js,
+  * ...,
+
+
 ### 0.3.0 (October 5, 2016)
 
   * Updated the module to comply with Airbnb's ESLint rules.
