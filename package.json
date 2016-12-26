@@ -12,7 +12,8 @@
     "test": "istanbul cover -x ./test/main.js _mocha -- -R spec ./test/main.js --compilers js:babel/register",
     "check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "display-coverage": "opener ./coverage/lcov-report/index.html",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls"
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "precommit": "npm run test && npm run check-coverage"
   },
   "repository": {
     "type": "git",
@@ -36,31 +37,31 @@
   },
   "homepage": "https://github.com/jclo/es6umd",
   "dependencies": {
-    "nopt": "3.0.6",
+    "nopt": "4.0.1",
     "path": "0.12.7"
   },
   "devDependencies": {
     "babel": "5.8.38",
     "babelify": "6.3.0",
-    "browserify": "13.1.0",
+    "browserify": "13.1.1",
     "chai": "3.5.0",
-    "coveralls": "2.11.14",
+    "coveralls": "2.11.15",
     "del": "2.2.2",
-    "eslint": "3.5.0",
-    "eslint-config-airbnb-base": "7.1.0",
-    "eslint-plugin-import": "1.15.0",
-    "ghooks": "1.3.2",
+    "eslint": "3.12.2",
+    "eslint-config-airbnb-base": "11.0.0",
+    "eslint-plugin-import": "2.2.0",
     "gulp": "3.9.1",
     "gulp-header": "1.8.8",
     "gulp-replace": "0.5.4",
-    "gulp-sourcemaps": "1.6.0",
+    "gulp-sourcemaps": "2.2.1",
     "gulp-util": "3.0.7",
+    "husky": "0.12.0",
     "istanbul": "0.4.5",
-    "mocha": "3.1.0",
+    "mocha": "3.2.0",
     "opener": "1.4.2",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
-    "watchify": "3.7.0"
+    "watchify": "3.8.0"
   },
   "browser": {},
   "browserify-shim": {},
@@ -68,10 +69,5 @@
     "transform": [
       "babelify"
     ]
-  },
-  "config": {
-    "ghooks": {
-      "pre-commit": "npm run test && npm run check-coverage"
-    }
   }
 }

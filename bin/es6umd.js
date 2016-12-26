@@ -27,6 +27,7 @@
 /* eslint-env node */
 /* eslint one-var: 0, object-shorthand: 0, no-console: 0, max-len: [1, 110, 2] */
 /* eslint strict: 0 */
+
 'use strict';
 
 // -- Node modules

@@ -28,6 +28,7 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 /* eslint prefer-arrow-callback: 0 */
 /* eslint strict: 0 */
+
 'use strict';
 
 // -- Node modules
@@ -54,14 +55,14 @@ const name       = require('./package.json').name.toLowerCase()
 
 // License
 const license = ['/**',
-` * ${name} v${release}`,
-' *',
-` * ${name} is ...`,
-' * Copyright (c) 2016 John Doe <jdo@johndoe.com> (http://www.johndoe.com).',
-' * Released under the MIT license. You may obtain a copy of the License',
-' * at: http://www.opensource.org/licenses/mit-license.php).',
-' */',
-''].join('\n');
+  ` * ${name} v${release}`,
+  ' *',
+  ` * ${name} is ...`,
+  ' * Copyright (c) 2016 John Doe <jdo@johndoe.com> (http://www.johndoe.com).',
+  ' * Released under the MIT license. You may obtain a copy of the License',
+  ' * at: http://www.opensource.org/licenses/mit-license.php).',
+  ' */',
+  ''].join('\n');
 
 // -- Local functions
 
@@ -110,8 +111,7 @@ gulp.task('watchify', function() {
       debug: debug,
       standalone: exportname,
     },
-    watchify.args
-  ));
+    watchify.args));
 
   function build() {
     b.bundle()

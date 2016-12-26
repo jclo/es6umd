@@ -1,5 +1,10 @@
 ### HEAD
 
+### 0.3.2 (December 26, 2016)
+
+  * Updated the dependencies and replaced the deprecated ghooks module by Husky.
+
+
 ### 0.3.1 (October 5, 2016)
 
   * Added 'use strict' to gulpfile.js,

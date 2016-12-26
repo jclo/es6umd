@@ -1,7 +1,7 @@
 /* global describe, it */
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 import { expect } from 'chai';
-import UMDLib from '../index.js';
+import UMDLib from '../index';
 
 describe('UMDLib', () => {
   const umdlib = new UMDLib();
