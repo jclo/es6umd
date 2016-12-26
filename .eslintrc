@@ -1,6 +1,6 @@
 {
   /**
-   * Disable the module option as we we use node modules:
+   * Disable the module option as we use node modules:
    */
   "parserOptions": {
     "sourceType": "module",

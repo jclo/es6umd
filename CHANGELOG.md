@@ -1,5 +1,10 @@
 ### HEAD
 
+### 0.4.0 (December 26, 2016)
+
+  * Switched the project to Babel 6.
+
+
 ### 0.3.3 (December 26, 2016)
 
   * Updated .travis.yml to run the tests with the latest stable version of Node.js.

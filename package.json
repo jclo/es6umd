@@ -1,6 +1,6 @@
 {
   "name": "es6umd",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "A template for writing micro ES6 Javascript libraries",
   "bin": {
     "es6umd": "./bin/es6umd.js"
@@ -9,8 +9,8 @@
   "scripts": {
     "build": "gulp build",
     "watch": "gulp watch",
-    "test": "istanbul cover -x ./test/main.js _mocha -- -R spec ./test/main.js --compilers js:babel/register",
-    "check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "test": "nyc --reporter=lcov _mocha ./test/main.js --compilers js:babel-core/register",
+    "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "display-coverage": "opener ./coverage/lcov-report/index.html",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "precommit": "npm run test && npm run check-coverage"
@@ -41,8 +41,10 @@
     "path": "0.12.7"
   },
   "devDependencies": {
-    "babel": "5.8.38",
-    "babelify": "6.3.0",
+    "babel-core": "6.21.0",
+    "babel-plugin-transform-react-jsx": "6.8.0",
+    "babel-preset-latest": "6.16.0",
+    "babelify": "7.3.0",
     "browserify": "13.1.1",
     "chai": "3.5.0",
     "coveralls": "2.11.15",
@@ -56,8 +58,8 @@
     "gulp-sourcemaps": "2.2.1",
     "gulp-util": "3.0.7",
     "husky": "0.12.0",
-    "istanbul": "0.4.5",
     "mocha": "3.2.0",
+    "nyc": "10.0.0",
     "opener": "1.4.2",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
