@@ -1,5 +1,12 @@
 ### HEAD
 
+### 0.4.1 (April 29, 2017)
+
+  * Updated the dependencies,
+  * Fixed an issue with Istanbul test coverage,
+  * ...,
+
+
 ### 0.4.0 (December 26, 2016)
 
   * Switched the project to Babel 6.

@@ -4,7 +4,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2015-2016 jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr)
+ * Copyright (c) 2017 jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,7 +74,7 @@ const readme = [
 const license = [
   'The MIT License (MIT)',
   '',
-  'Copyright (c) 2016 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
+  'Copyright (c) 2017 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
   '',
   'Permission is hereby granted, free of charge, to any person obtaining a copy',
   'of this software and associated documentation files (the "Software"), to deal',
@@ -268,7 +268,7 @@ function _populate(options) {
   console.log('  CHANGELOG.md');
   fs.writeFileSync(path.join(baseapp, 'CHANGELOG.md'), changelog);
 
-  // Add index.js, .eslintrc, .gitignore, .travis.yml and gulfile.js
+  // Add index.js, .eslintrc, .gitignore, .travis.yml, .babelrc and gulfile.js
   console.log('  index.js');
   _copyFile(path.join(baselib, 'index.js'), path.join(baseapp, 'index.js'));
   console.log('  .eslintrc');
@@ -278,6 +278,8 @@ function _populate(options) {
   fs.closeSync(fs.openSync('.gitignore', 'w'));
   console.log('  .travis.yml');
   _copyFile(path.join(baselib, '.travis.yml'), path.join(baseapp, '.travis.yml'));
+  console.log('  .babelrc');
+  _copyFile(path.join(baselib, '.babelrc'), path.join(baseapp, '.babelrc'));
   console.log('  gulpfile.js');
   _copyFile(path.join(baselib, 'gulpfile.js'), path.join(baseapp, 'gulpfile.js'));
 

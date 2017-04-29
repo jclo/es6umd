@@ -1,4 +1,14 @@
 {
-  "presets": ["latest"],
-  "plugins": ["transform-react-jsx"]
+  "presets": [
+    "latest"
+  ],
+  "plugins": [
+    "add-module-exports",
+    "transform-react-jsx"
+  ],
+  "env": {
+    "test": {
+      "plugins": [ "istanbul" ]
+    }
+  }
 }
