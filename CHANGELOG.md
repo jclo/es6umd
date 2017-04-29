@@ -4,7 +4,7 @@
 
   * Updated the dependencies,
   * Fixed an issue with Istanbul test coverage,
-  * ...,
+  * Release.
 
 
 ### 0.4.0 (December 26, 2016)
