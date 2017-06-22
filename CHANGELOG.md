@@ -1,9 +1,9 @@
 ### HEAD
 
-### 0.4.x (June 22, 2017)
+### 0.5.0 (June 22, 2017)
 
   * Reworked and made the build more modular,
-  * ...,
+  * Release.
 
 
 ### 0.4.1 (April 29, 2017)
