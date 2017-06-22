@@ -1,6 +1,8 @@
 .DS_Store
 .nyc_output
+__trash
+_dist
 node_modules
 coverage
-_dist
+lib
 TODOLIST.md

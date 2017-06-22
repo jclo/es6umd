@@ -37,11 +37,12 @@ const fs      = require('fs')
     ;
 
 // -- Global variables
-const baseapp = process.cwd()
-    , baselib = __dirname.replace('/bin', '')
-    , version = require('../package.json').version
-    , lib     = 'lib'
-    , test    = 'test'
+const baseapp   = process.cwd()
+    , baselib   = __dirname.replace('/bin', '')
+    , version   = require('../package.json').version
+    , src       = 'src'
+    , test      = 'test'
+    , gulptasks = 'tasks'
     // Command line Options
   , opts = {
     help: [Boolean, false],
@@ -161,26 +162,32 @@ function _customizeApp(baseumdlib, baseApp, appname) {
   });
 
   const obj = JSON.parse(json);
-  obj.name = appname.toLowerCase();
-  obj.version = '0.0.0';
-  obj.description = `${appname} ...`;
-  obj.main = `_dist/${appname.toLowerCase()}.js`;
-  obj.repository.url = 'https://github.com/author/libname.git';
-  obj.keywords = ['to be filled'];
-  obj.author.name = 'John Doe';
-  obj.author.email = 'jdo@johndoe.com';
-  obj.author.url = 'http://www.johndoe.com';
-  obj.bugs.url = 'https://github.com/author/libname/issues';
-  obj.homepage = 'https://github.com/author/libname';
-  delete obj.bin;
+  const pack = {};
+  pack.name = appname.toLowerCase();
+  pack.version = '0.0.0';
+  pack.description = `${appname} ...`;
+  pack.main = obj.main;
+  pack.scripts = obj.scripts;
+  pack.repository = obj.repository;
+  pack.repository.url = 'https://github.com/author/libname.git';
+  pack.keywwords = ['to be filled!'];
+  pack.author = obj.author;
+  pack.author.name = 'John Doe';
+  pack.author.email = 'jdo@johndoe.com';
+  pack.author.url = 'http://www.johndoe.com';
+  pack.license = obj.license;
+  pack.bugs = obj.bugs;
+  pack.bugs.url = 'https://github.com/author/libname/issues';
+  pack.homepage = 'https://github.com/author/libname';
+  pack.dependencies = obj.dependencies;
   delete obj.dependencies.nopt;
   delete obj.dependencies.path;
-  delete obj.readme;
-  delete obj.readmeFilename;
-  delete obj.gitHead;
-  delete obj._id;
-  delete obj._shasum;
-  delete obj._from;
+  pack.devDependencies = obj.devDependencies;
+  pack.browser = obj.browser;
+  pack['browserify-shim'] = obj['browserify-shim'];
+  pack['browserify-swap'] = obj['browserify-swap'];
+  pack.browserify = obj.browserify;
+  pack.engines = obj.engines;
 
   console.log(`  ${npm}`);
   fs.writeFileSync(path.join(baseApp, npm), JSON.stringify(obj, null, 2));
@@ -280,15 +287,17 @@ function _populate(options) {
   _copyFile(path.join(baselib, '.travis.yml'), path.join(baseapp, '.travis.yml'));
   console.log('  .babelrc');
   _copyFile(path.join(baselib, '.babelrc'), path.join(baseapp, '.babelrc'));
-  console.log('  gulpfile.js');
+  // copy gulfile.js and gulp tasks:
+  console.log('  gulpfile.js & gulp tasks');
   _copyFile(path.join(baselib, 'gulpfile.js'), path.join(baseapp, 'gulpfile.js'));
+  _copyRecursiveSync(path.join(baselib, gulptasks), path.join(baseapp, gulptasks));
 
   // Add the package.json and remove ES6UMD dependencies.
   _customizeApp(baselib, baseapp, app);
 
-  // Create and fill lib and test folders.
+  // Create and fill src and test folders.
   console.log('Fills the UMD lib skeleton:');
-  _copyRecursiveSync(path.join(baselib, lib), path.join(baseapp, lib));
+  _copyRecursiveSync(path.join(baselib, src), path.join(baseapp, src));
   _copyRecursiveSync(path.join(baselib, test), path.join(baseapp, test));
   console.log('Done. Enjoy!');
 }

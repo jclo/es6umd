@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.4.x (June 22, 2017)
+
+  * Reworked and made the build more modular,
+  * ...,
+
+
 ### 0.4.1 (April 29, 2017)
 
   * Updated the dependencies,

@@ -3,8 +3,7 @@
     "latest"
   ],
   "plugins": [
-    "add-module-exports",
-    "transform-react-jsx"
+    "add-module-exports"
   ],
   "env": {
     "test": {
