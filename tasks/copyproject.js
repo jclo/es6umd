@@ -1,7 +1,5 @@
-/* eslint one-var: 0, prefer-arrow-callback: 0, import/no-extraneous-dependencies: 0 */
-/* eslint strict: 0 */
-
-'use strict';
+/* eslint one-var: 0, prefer-arrow-callback: 0, import/no-extraneous-dependencies: 0,
+  semi-style: 0 */
 
 // -- Node modules
 const gulp        = require('gulp')
@@ -16,10 +14,10 @@ const config = require('./config')
     ;
 
 // -- Local constants
-const dist    = config.dist
-    , lib     = config.lib
-    , name    = config.name
-    , license = config.license
+const { dist }    = config
+    , { lib }     = config
+    , { name }    = config
+    , { license } = config
     ;
 
 // -- Local variables
@@ -32,13 +30,13 @@ gulp.task('uglify', function() {
   return gulp.src(`${lib}/${name}.js`)
     .pipe(uglify())
     .pipe(header(license))
-    .pipe(concat(`${name}-min.js`))
+    .pipe(concat(`${name}.min.js`))
     .pipe(gulp.dest(lib));
 });
 
 // Copy the lib to dist:
 gulp.task('copylib', function() {
-  return gulp.src(`${lib}/${name}-min.js`)
+  return gulp.src(`${lib}/${name}.min.js`)
     .pipe(gulp.dest(dist));
 });
 

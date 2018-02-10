@@ -1,13 +1,13 @@
 {
   "presets": [
-    "latest"
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "ie 9"]
+      },
+      "test": {
+        "plugins": [ "istanbul" ]
+      }
+    }]
   ],
-  "plugins": [
-    "add-module-exports"
-  ],
-  "env": {
-    "test": {
-      "plugins": [ "istanbul" ]
-    }
-  }
+  "plugins": ["add-module-exports"]
 }

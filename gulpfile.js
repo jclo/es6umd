@@ -1,5 +1,5 @@
-/* eslint one-var: 0, prefer-arrow-callback: 0*/
-/* eslint strict: 0 */
+/* eslint one-var: 0, prefer-arrow-callback: 0 */
+/* eslint strict: 0, semi-style: 0 */
 
 'use strict';
 

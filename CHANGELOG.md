@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.6.0 (February 10, 2018)
+
+  * Updated the project to comply with browserify 16.x and ESLint 4.x,
+  * ...,
+
+
 ### 0.5.0 (June 22, 2017)
 
   * Reworked and made the build more modular,

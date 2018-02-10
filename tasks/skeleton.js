@@ -1,7 +1,5 @@
-/* eslint one-var: 0, prefer-arrow-callback: 0, import/no-extraneous-dependencies: 0 */
-/* eslint strict: 0 */
-
-'use strict';
+/* eslint one-var: 0, prefer-arrow-callback: 0, import/no-extraneous-dependencies: 0,
+  semi-style: 0 */
 
 // -- Node modules
 const del         = require('del')
@@ -14,7 +12,7 @@ const config = require('./config')
   ;
 
 // -- Local constants
-const dist    = config.dist
+const { dist } = config
     ;
 
 // -- Local variables

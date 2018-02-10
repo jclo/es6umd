@@ -1,12 +1,12 @@
-/* eslint one-var: 0 */
+/* eslint one-var: 0, semi-style: 0 */
 
 // -- Node modules
 
 // -- Local modules
 
 // -- Local constants
-const name    = require('../package.json').name
-    , release = require('../package.json').version
+const { name } = require('../package.json')
+    , release  = require('../package.json').version
     ;
 
 // -- Configuration file for Gulp
@@ -15,11 +15,20 @@ module.exports = {
   release,
   dist: './_dist',
   lib: './lib',
-  srcfile: './index.js',
-  debug: false,
-  exportname: 'UMDLib',       // Name to expose outside the lib,
+  // Specific to browserify:
+  browserify: {
+    app: './index',
+    debug: false,
+    exportname: 'UMDLib', // Name to expose outside the lib,
+  },
   babel: {
-    presets: ['latest'],
+    presets: [
+      ['env', {
+        targets: {
+          browsers: ['last 2 versions', 'ie 9'],
+        },
+      }],
+    ],
     plugins: ['add-module-exports'],
     env: {
       test: {
@@ -31,7 +40,7 @@ module.exports = {
     ` * ${name} v${release}`,
     ' *',
     ` * ${name} is ...`,
-    ' * Copyright (c) 2017 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
+    ' * Copyright (c) 2018 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
     ' * Released under the MIT license. You may obtain a copy of the License',
     ' * at: http://www.opensource.org/licenses/mit-license.php).',
     ' */',

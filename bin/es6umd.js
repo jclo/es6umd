@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-/* ****************************************************************************
+/* *****************************************************************************
  * es6umd.js creates the skeleton for writing a micro UMD Javascript library.
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2017 jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr)
+ * Copyright (c) 2018 jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,10 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * ***************************************************************************/
+ * ************************************************************************** */
 /* eslint-env node */
-/* eslint one-var: 0, object-shorthand: 0, no-console: 0, max-len: [1, 110, 2] */
-/* eslint strict: 0 */
-
-'use strict';
+/* eslint one-var: 0, object-shorthand: 0, no-console: 0, max-len: [1, 110, 2],
+  semi-style: 0 */
 
 // -- Node modules
 const fs      = require('fs')
@@ -37,29 +35,29 @@ const fs      = require('fs')
     ;
 
 // -- Global variables
-const baseapp   = process.cwd()
-    , baselib   = __dirname.replace('/bin', '')
-    , version   = require('../package.json').version
-    , src       = 'src'
-    , test      = 'test'
-    , gulptasks = 'tasks'
+const baseapp     = process.cwd()
+    , baselib     = __dirname.replace('/bin', '')
+    , { version } = require('../package.json')
+    , src         = 'src'
+    , test        = 'test'
+    , gulptasks   = 'tasks'
     // Command line Options
-  , opts = {
-    help: [Boolean, false],
-    version: [String, null],
-    collection: [Boolean, false],
-    path: path,
-    name: [String, null],
-  }
-  , shortOpts = {
-    h: ['--help'],
-    v: ['--version', version],
-    c: ['--collection'],
-    p: ['--path'],
-    n: ['--name'],
-  }
-  , parsed = nopt(opts, shortOpts, process.argv, 2)
-  ;
+    , opts = {
+      help: [Boolean, false],
+      version: [String, null],
+      collection: [Boolean, false],
+      path: path,
+      name: [String, null],
+    }
+    , shortOpts = {
+      h: ['--help'],
+      v: ['--version', version],
+      c: ['--collection'],
+      p: ['--path'],
+      n: ['--name'],
+    }
+    , parsed = nopt(opts, shortOpts, process.argv, 2)
+    ;
 
 // -- Templates
 const readme = [
@@ -75,7 +73,7 @@ const readme = [
 const license = [
   'The MIT License (MIT)',
   '',
-  'Copyright (c) 2017 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
+  'Copyright (c) 2018 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
   '',
   'Permission is hereby granted, free of charge, to any person obtaining a copy',
   'of this software and associated documentation files (the "Software"), to deal',
