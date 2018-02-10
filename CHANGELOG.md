@@ -3,7 +3,7 @@
 ### 0.6.0 (February 10, 2018)
 
   * Updated the project to comply with browserify 16.x and ESLint 4.x,
-  * ...,
+  * Release.
 
 
 ### 0.5.0 (June 22, 2017)
