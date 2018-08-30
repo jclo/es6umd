@@ -3,7 +3,7 @@
 ### 0.6.1 (August 30, 2018)
 
   * Added Gitbook for displaying the documentation,
-  * ...,
+  * Release.
 
 
 ### 0.6.0 (February 10, 2018)
