@@ -19,7 +19,7 @@ module.exports = {
   browserify: {
     app: './index',
     debug: false,
-    exportname: 'UMDLib', // Name to expose outside the lib,
+    exportname: 'ES6UMD', // Name to expose outside the lib,
   },
   babel: {
     presets: [

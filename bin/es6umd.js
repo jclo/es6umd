@@ -25,13 +25,13 @@
  * THE SOFTWARE.
  * ************************************************************************** */
 /* eslint-env node */
-/* eslint one-var: 0, object-shorthand: 0, no-console: 0, max-len: [1, 110, 2],
-  semi-style: 0 */
+/* eslint one-var: 0, object-shorthand: 0, max-len: [1, 120, 2], semi-style: 0 */
 
 // -- Node modules
-const fs      = require('fs')
-    , nopt    = require('nopt')
-    , path    = require('path')
+const fs           = require('fs')
+    , { Readable } = require('stream')
+    , nopt         = require('nopt')
+    , path         = require('path')
     ;
 
 // -- Global variables
@@ -39,8 +39,9 @@ const baseapp     = process.cwd()
     , baselib     = __dirname.replace('/bin', '')
     , { version } = require('../package.json')
     , src         = 'src'
+    , tasks       = 'tasks'
     , test        = 'test'
-    , gulptasks   = 'tasks'
+    , docs        = 'docs'
     // Command line Options
     , opts = {
       help: [Boolean, false],
@@ -103,6 +104,8 @@ const changelog = [
   '  * Initial build.',
   ''].join('\n');
 
+const gitignore = '';
+
 
 // -- Private functions --------------------------------------------------------
 /* eslint-disable no-underscore-dangle */
@@ -140,7 +143,92 @@ function _copyFile(source, dest) {
 }
 
 /**
- * Removes UMDLib dependencies to package.json
+ * Copies source file to destination with a filtering.
+ *
+ * @function (arg1, arg2, arg3)
+ * @private
+ * @param {String}    the source path,
+ * @param {String}    the destination path,
+ * @param {String}    the name of the library,
+ * @returns {}        -,
+ */
+function _copyFileAndReplace(source, dest, app) {
+  const re  = new RegExp('ES6UMD', 'g')
+      , re2 = new RegExp('{{template:version}}')
+      ;
+  let s
+    ;
+
+  fs.readFile(source, 'utf8', (error, data) => {
+    if (error) { throw error; }
+    s = data.replace(re, app).replace(re2, version);
+    fs.writeFile(dest, s, 'utf8', (err) => {
+      if (err) { throw err; }
+    });
+  });
+}
+
+/**
+ * Recursively copies source to destination.
+ *
+ * @function (arg1, arg2, arg3, arg4, arg5)
+ * @private
+ * @param {String}    the source folder/file,
+ * @param {String}    the destination folder/file,
+ * @param {String}    the name of the library,
+ * @param {String}    the relative path,
+ * @param {Array}     the files not to copy,
+ * @returns {}        -,
+ */
+function _copyRecursiveSync(source, dest, app, destpath, excluFiles) {
+  if (fs.statSync(source).isDirectory()) {
+    fs.mkdirSync(dest);
+    const files = _filter(fs.readdirSync(source));
+    for (let i = 0; i < files.length; i++) {
+      if (fs.statSync(`${source}/${files[i]}`).isDirectory()) {
+        if (!excluFiles || excluFiles.indexOf(files[i]) === -1) {
+          _copyRecursiveSync(`${source}/${files[i]}`, `${dest}/${files[i]}`, app, destpath, excluFiles);
+        }
+      } else {
+        const lopath = destpath ? dest.replace(destpath, '') : dest;
+
+        if (!excluFiles || excluFiles.indexOf(files[i]) === -1) {
+          process.stdout.write(`  ${lopath}/${files[i]}\n`);
+          _copyFileAndReplace(`${source}/${files[i]}`, `${dest}/${files[i]}`, app);
+        }
+      }
+    }
+  } else {
+    _copyFileAndReplace(source, dest, app);
+  }
+}
+
+/**
+ * Copies source data to destination file.
+ *
+ * @function (arg1, arg2)
+ * @private
+ * @param {String}    the destination path,
+ * @param {Array}     the files to create and their contents,
+ * @returns {}        -,
+ */
+function _createFiles(destpath, files) {
+  let s
+    ;
+
+  for (let i = 0; i < files[0].length; i++) {
+    // Convert the string to a readable stream:
+    s = new Readable();
+    s.push(files[0][i]);
+    s.push(null);
+    // Write the stream to the destination file:
+    s.pipe(fs.createWriteStream(path.join(destpath, files[1][i])));
+    process.stdout.write(`  ${files[1][i]}\n`);
+  }
+}
+
+/**
+ * Removes ES6UMD dependencies to package.json
  *
  * @function (arg1, arg2, arg3)
  * @private
@@ -149,11 +237,11 @@ function _copyFile(source, dest) {
  * @param {String}    the name of the UMD library,
  * @returns {}        -,
  */
-function _customizeApp(baseumdlib, baseApp, appname) {
+function _customizeApp(base, baseApp, appname) {
   const npm   = 'package.json';
 
   // Rework package.json
-  const json = fs.readFileSync(path.join(baseumdlib, npm), 'utf8', (error) => {
+  const json = fs.readFileSync(path.join(base, npm), 'utf8', (error) => {
     if (error) {
       throw error;
     }
@@ -187,36 +275,8 @@ function _customizeApp(baseumdlib, baseApp, appname) {
   pack.browserify = obj.browserify;
   pack.engines = obj.engines;
 
-  console.log(`  ${npm}`);
-  fs.writeFileSync(path.join(baseApp, npm), JSON.stringify(obj, null, 2));
-}
-
-/**
- * Recursively copies source to destination.
- *
- * @function (arg1, arg2)
- * @private
- * @param {String}    the source folder/file,
- * @param {String}    the destination folder/file,
- * @returns {}        -,
- */
-function _copyRecursiveSync(source, dest) {
-  if (fs.statSync(source).isDirectory()) {
-    fs.mkdirSync(dest);
-    const files = _filter(fs.readdirSync(source));
-    for (let i = 0; i < files.length; i++) {
-      if (fs.statSync(`${source}/${files[i]}`).isDirectory()) {
-        console.log(`  Add folder: ${files[i]}`);
-        _copyRecursiveSync(`${source}/${files[i]}`, `${dest}/${files[i]}`);
-      } else {
-        // console.log('  ' + 'Add file: ' + files[i]);
-        console.log(`  Add folder: ${files[i]}`);
-        _copyFile(`${source}/${files[i]}`, `${dest}/${files[i]}`);
-      }
-    }
-  } else {
-    _copyFile(source, dest);
-  }
+  process.stdout.write(`  ${npm}\n`);
+  fs.writeFileSync(path.join(baseApp, npm), JSON.stringify(pack, null, 2));
 }
 
 /**
@@ -239,7 +299,7 @@ function _help() {
     '',
   ].join('\n');
 
-  console.log(message);
+  process.stdout.write(message);
   process.exit(0);
 }
 
@@ -252,53 +312,60 @@ function _help() {
  * @returns {}        -,
  */
 function _populate(options) {
-  const app = options.name || 'myApp';
+  const app = options.name || 'myApp'
+      , authFiles = ['etc', 'package.json', 'package-lock.json', 'node_modules', 'private_repo']
 
-  // Check that the folder app is empty.
-  console.log('Checks that the folder app is empty...');
-  const files = _filter(fs.readdirSync(baseapp));
-  if (files.length > 1 || (files[0] !== undefined && files[0] !== 'node_modules')) {
-    console.log('This folder already contains files and/or folders. Clean it up first! Process aborted...');
+      , newFiles = [
+        [readme, license, changelog, gitignore],
+        ['README.md', 'LICENSE.md', 'CHANGELOG.md', '.gitignore'],
+      ]
+      , dupFiles = ['.babelrc', '.eslintrc', '.travis.yml', 'gulpfile.js', 'index.js']
+      , excludeTasks = []
+      , excluSrc = []
+      , exludeDocs = ['_book']
+      ;
+
+  // Check the folder app is empty:
+  process.stdout.write('Checks that the folder app is empty...\n');
+  let files = _filter(fs.readdirSync(baseapp));
+  files = files.filter(file => authFiles.indexOf(file) === -1);
+  if (files.length) {
+    process.stdout.write('This folder already contains files and/or folders. Clean it up first! Process aborted...\n');
     process.exit(1);
   }
 
-  // Ok. Populate it.
-  console.log('Populates the folder with:');
+  // Ok. Populate it:
+  process.stdout.write('Populates the folder with:\n');
 
-  // Create README.md, LICENSE.md, CHANGELOG.md
-  console.log('  README.md');
-  fs.writeFileSync(path.join(baseapp, 'README.md'), readme);
-  console.log('  LICENSE.md');
-  fs.writeFileSync(path.join(baseapp, 'LICENSE.md'), license);
-  console.log('  CHANGELOG.md');
-  fs.writeFileSync(path.join(baseapp, 'CHANGELOG.md'), changelog);
+  // Create README.md, LICENSE.md, CHANGELOG.md, gitignore:
+  _createFiles(baseapp, newFiles);
 
-  // Add index.js, .eslintrc, .gitignore, .travis.yml, .babelrc and gulfile.js
-  console.log('  index.js');
-  _copyFile(path.join(baselib, 'index.js'), path.join(baseapp, 'index.js'));
-  console.log('  .eslintrc');
-  _copyFile(path.join(baselib, '.eslintrc'), path.join(baseapp, '.eslintrc'));
-  console.log('  .gitignore');
-  // _copyFile(path.join(baselib, '.gitignore'), path.join(baseapp, '.gitignore'));
-  fs.closeSync(fs.openSync('.gitignore', 'w'));
-  console.log('  .travis.yml');
-  _copyFile(path.join(baselib, '.travis.yml'), path.join(baseapp, '.travis.yml'));
-  console.log('  .babelrc');
-  _copyFile(path.join(baselib, '.babelrc'), path.join(baseapp, '.babelrc'));
-  // copy gulfile.js and gulp tasks:
-  console.log('  gulpfile.js & gulp tasks');
-  _copyFile(path.join(baselib, 'gulpfile.js'), path.join(baseapp, 'gulpfile.js'));
-  _copyRecursiveSync(path.join(baselib, gulptasks), path.join(baseapp, gulptasks));
+  // Duplicate index.js, ...
+  for (let i = 0; i < dupFiles.length; i++) {
+    process.stdout.write(`  ${dupFiles[i]}\n`);
+    _copyFile(path.join(baselib, dupFiles[i]), path.join(baseapp, dupFiles[i]));
+  }
 
-  // Add the package.json and remove ES6UMD dependencies.
+  // Add and customize package.json:
   _customizeApp(baselib, baseapp, app);
 
-  // Create and fill src and test folders.
-  console.log('Fills the UMD lib skeleton:');
-  _copyRecursiveSync(path.join(baselib, src), path.join(baseapp, src));
-  _copyRecursiveSync(path.join(baselib, test), path.join(baseapp, test));
-  console.log('Done. Enjoy!');
+  // Copy Gulp Task files:
+  _copyRecursiveSync(path.join(baselib, tasks), path.join(baseapp, tasks), app, `${baseapp}/`, excludeTasks);
+
+  // Copy Test Files:
+  _copyRecursiveSync(path.join(baselib, test), path.join(baseapp, test), app, `${baseapp}/`);
+
+  // Copy Doc Files:
+  _copyRecursiveSync(path.join(baselib, docs), path.join(baseapp, docs), app, `${baseapp}/`, exludeDocs);
+
+  // Copy Source Files:
+  _copyRecursiveSync(path.join(baselib, src), path.join(baseapp, src), app, `${baseapp}/`, excluSrc);
+
+  setTimeout(() => {
+    process.stdout.write('Done. Enjoy!\n');
+  }, 1000);
 }
+/* eslint-enable no-underscore-dangle */
 
 
 // -- Main
@@ -306,7 +373,7 @@ if (parsed.help) {
   _help();
 }
 if (parsed.version) {
-  console.log(`es6umd version: ${parsed.version}`);
+  process.stdout.write(`es6umd version: ${parsed.version}\n`);
   process.exit(0);
 }
 

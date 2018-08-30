@@ -1,3 +1,3 @@
-import es6umd from './src/main';
+import ES6UMD from './src/main';
 
-export default es6umd;
+export default ES6UMD;

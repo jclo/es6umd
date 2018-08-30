@@ -19,7 +19,7 @@
 /* eslint no-useless-constructor: 0, class-methods-use-this: 0 */
 import lib from './lib';
 
-class ES6umd {
+class ES6UMD {
   /**
    * Initializes ...
    *
@@ -58,4 +58,4 @@ class ES6umd {
   }
 }
 
-export default ES6umd;
+export default ES6UMD;

@@ -52,20 +52,27 @@ Now your project folder contains the following files:
 
 ```
 Your project Folder
-      |_ README.md             // Your README file,
-      |_ LICENSE.md            // The license that applies to your library (here MIT),
-      |_ CHANGELOG.md          // The changes between your different versions,
-      |_ package.json          // The NPM packages dependencies for your library,
-      |_ .travis.yml           // A configuration file for Travis CI (if you use it),
-      |_ .eslintrc             // A Configuration file for the ESLint linter tool (if you use it),
-      |_ .gitignore            // Files that Git must ignore (if you use git), 
-      |_ index.js              // The link to your ES6 libraries,
+      |_ docs                 // The Gitbook documentation of your project,
       |_ lib
-      |   |_ main.js           // Your es6 main library,
-      |   |_ lib.js            // A second es6 library,
-      |_ test
-          |_ main.js           // Your Mocha, Chai test file,
-
+      |   |_ lib.js           // Your lib converted by babel and browserify to an ES5 module,
+      |_ src
+      |  |_ main.js           // Your ES6 main library,
+      |  |_ lib.js            // A second ES6 library,
+      |_ tasks
+      |   |_ ...              // The Gulp tasks to build your project,
+      |_  test
+      |     |_ main.js        // Your Mocha, Chai test file,
+      |_ .babelrc             // The configuration file for Babel,
+      |_ .eslintrc            // A Configuration file for the ESLint linter tool (if you use it),
+      |_ .gitignore           // Files that Git must ignore (if you use git),
+      |_ .travis.yml          // A configuration file for Travis CI (if you use it),
+      |_ .CHANGELOG.md        // The changes between your different versions,
+      |_ .gulpfile.js         // The main Gulp task,
+      |_ index.js             // The link to your ES6 libraries,
+      |_ LICENSE.md           // The license that applies to your library (here MIT),
+      |_ package-lock.json    // The NPM dependency tree,
+      |_ package.json         // The NPM package file,
+      |_ README.md            // Your README file,
 ```
 
 This project folder is now an NPM package.
@@ -123,7 +130,7 @@ On the browser, pick-up the Javascript file `_dist/<name of your library>.js` an
   <body>
     <script src="<name of your library>.js"></script>
     <script>
-      var lib = new UMDLib();
+      var lib = new <name of your library>();
       lib.getString();
       lib.getArray();
     </script>

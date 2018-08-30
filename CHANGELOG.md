@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.6.1 (August 30, 2018)
+
+  * Added Gitbook for displaying the documentation,
+  * ...,
+
+
 ### 0.6.0 (February 10, 2018)
 
   * Updated the project to comply with browserify 16.x and ESLint 4.x,
