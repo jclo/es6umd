@@ -30,7 +30,7 @@ gulp.task('watch', ['watchify']);
 
 // Make a distribution:
 gulp.task('makedist', function(callback) {
-  runSequence('skeleton', 'copyproject', callback);
+  runSequence('builddist', callback);
 });
 
 // Build and then make a distribution:

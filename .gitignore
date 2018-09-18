@@ -6,3 +6,4 @@ coverage
 docs/_book
 lib
 node_modules
+private_repo

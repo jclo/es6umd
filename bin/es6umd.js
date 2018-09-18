@@ -319,7 +319,7 @@ function _populate(options) {
         [readme, license, changelog, gitignore],
         ['README.md', 'LICENSE.md', 'CHANGELOG.md', '.gitignore'],
       ]
-      , dupFiles = ['.babelrc', '.eslintrc', '.travis.yml', 'gulpfile.js', 'index.js']
+      , dupFiles = ['.babelrc', '.eslintrc', '.travis.yml', 'gulpfile.js']
       , excludeTasks = []
       , excluSrc = []
       , exludeDocs = ['_book']
@@ -345,6 +345,9 @@ function _populate(options) {
     process.stdout.write(`  ${dupFiles[i]}\n`);
     _copyFile(path.join(baselib, dupFiles[i]), path.join(baseapp, dupFiles[i]));
   }
+
+  // Copy index.js
+  _copyFileAndReplace(path.join(baselib, 'index.js'), path.join(baseapp, 'index.js'), app);
 
   // Add and customize package.json:
   _customizeApp(baselib, baseapp, app);

@@ -20,13 +20,13 @@ const config = require('./config')
   ;
 
 // -- Local constants
-const { lib } = config
-    , { name } = config
-    , { release } = config
-    , { browserify: { app } } = config
-    , { browserify: { debug } } = config
+const { libdir }                     = config
+    , { name }                       = config
+    , { release }                    = config
+    , { browserify: { app } }        = config
+    , { browserify: { debug } }      = config
     , { browserify: { exportname } } = config
-    , { babel } = config
+    , { babel }                      = config
     ;
 
 
@@ -37,7 +37,7 @@ const { lib } = config
 
 // Remove previous versions:
 gulp.task('removelib', function() {
-  del.sync([lib]);
+  del.sync([libdir]);
 });
 
 // Browserify:
@@ -58,7 +58,7 @@ gulp.task('browserify-int', function() {
     .pipe(replace('{{lib:version}}', release))
     // Write .map file.
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(lib));
+    .pipe(gulp.dest(libdir));
 });
 
 // Watchify:
@@ -86,7 +86,7 @@ gulp.task('watchify-int', function() {
       // Write .map file.
       .pipe(sourcemaps.write('./'))
       // Write stream to destination path.
-      .pipe(gulp.dest(lib));
+      .pipe(gulp.dest(libdir));
   }
 
   // On any update, run the bundler and output build logs to the terminal.

@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.6.2 (September 18, 2018)
+
+  * Made a few changes to the build,
+  * ...,
+
+
 ### 0.6.1 (August 30, 2018)
 
   * Added Gitbook for displaying the documentation,
