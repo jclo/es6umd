@@ -3,7 +3,7 @@
 ### 0.6.2 (September 18, 2018)
 
   * Made a few changes to the build,
-  * ...,
+  * Release.
 
 
 ### 0.6.1 (August 30, 2018)
