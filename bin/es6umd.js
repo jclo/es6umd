@@ -4,7 +4,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2018 jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr)
+ * Copyright (c) 2019 jclo <jclo@mobilabs.fr> (http://www.mobilabs.fr)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  * ************************************************************************** */
-/* eslint-env node */
-/* eslint one-var: 0, object-shorthand: 0, max-len: [1, 120, 2], semi-style: 0 */
+/* eslint one-var: 0,semi-style: 0 */
+
 
 // -- Node modules
 const fs           = require('fs')
@@ -35,19 +35,20 @@ const fs           = require('fs')
     ;
 
 // -- Global variables
-const baseapp     = process.cwd()
-    , baselib     = __dirname.replace('/bin', '')
+const boilerlib   = 'ES6UMD'
+    , baseapp     = process.cwd()
+    , baseumdlib  = __dirname.replace('/bin', '')
     , { version } = require('../package.json')
     , src         = 'src'
-    , tasks       = 'tasks'
     , test        = 'test'
+    , tasks       = 'tasks'
     , docs        = 'docs'
     // Command line Options
     , opts = {
       help: [Boolean, false],
       version: [String, null],
       collection: [Boolean, false],
-      path: path,
+      path,
       name: [String, null],
     }
     , shortOpts = {
@@ -69,12 +70,13 @@ const readme = [
   '## License',
   ' ',
   'MIT.',
-  ''].join('\n');
+  '',
+].join('\n');
 
 const license = [
   'The MIT License (MIT)',
   '',
-  'Copyright (c) 2018 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
+  'Copyright (c) 2019 John Doe <jdo@johndoe.com> (http://www.johndoe.com)',
   '',
   'Permission is hereby granted, free of charge, to any person obtaining a copy',
   'of this software and associated documentation files (the "Software"), to deal',
@@ -93,13 +95,14 @@ const license = [
   'LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,',
   'OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN',
   'THE SOFTWARE.',
-  ''].join('\n');
+  '',
+].join('\n');
 
 const changelog = [
   '### HEAD',
   '',
   '',
-  '### 0.1.0 (Month Day, Year)',
+  '### 0.0.0 (Month Day, Year)',
   '',
   '  * Initial build.',
   ''].join('\n');
@@ -119,13 +122,15 @@ const gitignore = '';
  * @returns {Array}   returns the filtered array,
  */
 function _filter(files) {
-  const filtered = [];
+  const filtered = []
+    ;
 
   for (let i = 0; i < files.length; i++) {
-    if (files[i].match(/^\./) === null) {
+    if (!files[i].match(/^\./)) {
       filtered.push(files[i]);
     }
   }
+
   return filtered;
 }
 
@@ -153,7 +158,7 @@ function _copyFile(source, dest) {
  * @returns {}        -,
  */
 function _copyFileAndReplace(source, dest, app) {
-  const re  = new RegExp('ES6UMD', 'g')
+  const re  = new RegExp(boilerlib, 'g')
       , re2 = new RegExp('{{template:version}}')
       ;
   let s
@@ -171,23 +176,30 @@ function _copyFileAndReplace(source, dest, app) {
 /**
  * Recursively copies source to destination.
  *
- * @function (arg1, arg2, arg3, arg4, arg5)
+ * @function (arg1, arg2, arg3, arg4, arg5, arg6)
  * @private
  * @param {String}    the source folder/file,
  * @param {String}    the destination folder/file,
  * @param {String}    the name of the library,
  * @param {String}    the relative path,
  * @param {Array}     the files not to copy,
+ * @param {Boolean}   add or not chached files,
  * @returns {}        -,
  */
-function _copyRecursiveSync(source, dest, app, destpath, excluFiles) {
+function _copyRecursiveSync(source, dest, app, destpath, excluFiles, addCachedFiles) {
   if (fs.statSync(source).isDirectory()) {
     fs.mkdirSync(dest);
-    const files = _filter(fs.readdirSync(source));
+
+    let files;
+    if (addCachedFiles) {
+      files = fs.readdirSync(source);
+    } else {
+      files = _filter(fs.readdirSync(source));
+    }
     for (let i = 0; i < files.length; i++) {
       if (fs.statSync(`${source}/${files[i]}`).isDirectory()) {
         if (!excluFiles || excluFiles.indexOf(files[i]) === -1) {
-          _copyRecursiveSync(`${source}/${files[i]}`, `${dest}/${files[i]}`, app, destpath, excluFiles);
+          _copyRecursiveSync(`${source}/${files[i]}`, `${dest}/${files[i]}`, app, destpath, excluFiles, addCachedFiles);
         }
       } else {
         const lopath = destpath ? dest.replace(destpath, '') : dest;
@@ -228,7 +240,7 @@ function _createFiles(destpath, files) {
 }
 
 /**
- * Removes ES6UMD dependencies to package.json
+ * Removes UMDLib dependencies to package.json.
  *
  * @function (arg1, arg2, arg3)
  * @private
@@ -237,46 +249,53 @@ function _createFiles(destpath, files) {
  * @param {String}    the name of the UMD library,
  * @returns {}        -,
  */
-function _customizeApp(base, baseApp, appname) {
-  const npm   = 'package.json';
+function _customizeApp(locbaseumdlib, locbaseapp, locappname) {
+  const npm   = 'package.json'
+    ;
 
-  // Rework package.json
-  const json = fs.readFileSync(path.join(base, npm), 'utf8', (error) => {
+  // Read package.json:
+  fs.readFile(path.join(locbaseumdlib, npm), 'utf8', (error, data) => {
     if (error) {
       throw error;
     }
+
+    // Fix package.json:
+    const obj = JSON.parse(data);
+    const pack = {};
+    pack.name = locappname;
+    pack.version = '0.0.0';
+    pack.description = `${locappname} ...`;
+    pack.main = obj.main;
+    pack.bin = {};
+    pack.scripts = obj.scripts;
+    pack.repository = obj.repository;
+    pack.repository.url = 'https://github.com/author/libname.git';
+    pack.keywords = [];
+    pack.author = obj.author;
+    pack.author.name = 'John Doe';
+    pack.author.email = 'jdo@johndoe.com';
+    pack.author.url = 'http://www.johndoe.com';
+    pack.license = obj.license;
+    pack.bugs = obj.bugs;
+    pack.bugs.url = 'https://github.com/author/libname/issues';
+    pack.homepage = 'https://github.com/author/libname';
+    pack.dependencies = obj.dependencies;
+    pack.devDependencies = obj.devDependencies;
+    pack.private = obj.private;
+    pack.husky = obj.husky;
+
+    delete pack.dependencies.nopt;
+    delete pack.dependencies.path;
+
+    // Write the updated package.json:
+    fs.writeFile(path.join(locbaseapp, npm), JSON.stringify(pack, null, 2), 'utf8', (err) => {
+      if (err) {
+        throw err;
+      }
+
+      process.stdout.write(`  ${npm}\n`);
+    });
   });
-
-  const obj = JSON.parse(json);
-  const pack = {};
-  pack.name = appname.toLowerCase();
-  pack.version = '0.0.0';
-  pack.description = `${appname} ...`;
-  pack.main = obj.main;
-  pack.scripts = obj.scripts;
-  pack.repository = obj.repository;
-  pack.repository.url = 'https://github.com/author/libname.git';
-  pack.keywwords = ['to be filled!'];
-  pack.author = obj.author;
-  pack.author.name = 'John Doe';
-  pack.author.email = 'jdo@johndoe.com';
-  pack.author.url = 'http://www.johndoe.com';
-  pack.license = obj.license;
-  pack.bugs = obj.bugs;
-  pack.bugs.url = 'https://github.com/author/libname/issues';
-  pack.homepage = 'https://github.com/author/libname';
-  pack.dependencies = obj.dependencies;
-  delete obj.dependencies.nopt;
-  delete obj.dependencies.path;
-  pack.devDependencies = obj.devDependencies;
-  pack.browser = obj.browser;
-  pack['browserify-shim'] = obj['browserify-shim'];
-  pack['browserify-swap'] = obj['browserify-swap'];
-  pack.browserify = obj.browserify;
-  pack.engines = obj.engines;
-
-  process.stdout.write(`  ${npm}\n`);
-  fs.writeFileSync(path.join(baseApp, npm), JSON.stringify(pack, null, 2));
 }
 
 /**
@@ -299,7 +318,7 @@ function _help() {
     '',
   ].join('\n');
 
-  process.stdout.write(message);
+  process.stdout.write(`${message}\n`);
   process.exit(0);
 }
 
@@ -311,15 +330,15 @@ function _help() {
  * @param {Object}    the command line options,
  * @returns {}        -,
  */
-function _populate(options) {
-  const app = options.name || 'myApp'
+function _populate(locopts) {
+  const app = locopts.name || 'myApp'
       , authFiles = ['etc', 'package.json', 'package-lock.json', 'node_modules', 'private_repo']
 
       , newFiles = [
         [readme, license, changelog, gitignore],
         ['README.md', 'LICENSE.md', 'CHANGELOG.md', '.gitignore'],
       ]
-      , dupFiles = ['.babelrc', '.eslintrc', '.travis.yml', 'gulpfile.js']
+      , dupFiles = ['.babelrc', 'index.js', '.travis.yml', '.eslintrc', 'gulpfile.js']
       , excludeTasks = []
       , excluSrc = []
       , exludeDocs = ['_book']
@@ -343,40 +362,38 @@ function _populate(options) {
   // Duplicate index.js, ...
   for (let i = 0; i < dupFiles.length; i++) {
     process.stdout.write(`  ${dupFiles[i]}\n`);
-    _copyFile(path.join(baselib, dupFiles[i]), path.join(baseapp, dupFiles[i]));
+    _copyFile(path.join(baseumdlib, dupFiles[i]), path.join(baseapp, dupFiles[i]));
   }
 
-  // Copy index.js
-  _copyFileAndReplace(path.join(baselib, 'index.js'), path.join(baseapp, 'index.js'), app);
-
   // Add and customize package.json:
-  _customizeApp(baselib, baseapp, app);
+  _customizeApp(baseumdlib, baseapp, app);
 
   // Copy Gulp Task files:
-  _copyRecursiveSync(path.join(baselib, tasks), path.join(baseapp, tasks), app, `${baseapp}/`, excludeTasks);
+  _copyRecursiveSync(path.join(baseumdlib, tasks), path.join(baseapp, tasks), app, `${baseapp}/`, excludeTasks);
 
   // Copy Test Files:
-  _copyRecursiveSync(path.join(baselib, test), path.join(baseapp, test), app, `${baseapp}/`);
+  _copyRecursiveSync(path.join(baseumdlib, test), path.join(baseapp, test), app, `${baseapp}/`);
 
   // Copy Doc Files:
-  _copyRecursiveSync(path.join(baselib, docs), path.join(baseapp, docs), app, `${baseapp}/`, exludeDocs);
+  _copyRecursiveSync(path.join(baseumdlib, docs), path.join(baseapp, docs), app, `${baseapp}/`, exludeDocs, true);
 
   // Copy Source Files:
-  _copyRecursiveSync(path.join(baselib, src), path.join(baseapp, src), app, `${baseapp}/`, excluSrc);
+  _copyRecursiveSync(path.join(baseumdlib, src), path.join(baseapp, src), app, `${baseapp}/`, excluSrc);
 
   setTimeout(() => {
     process.stdout.write('Done. Enjoy!\n');
   }, 1000);
 }
-/* eslint-enable no-underscore-dangle */
-
+/* eslint-disable no-underscore-dangle */
 
 // -- Main
 if (parsed.help) {
   _help();
 }
+
 if (parsed.version) {
-  process.stdout.write(`es6umd version: ${parsed.version}\n`);
+  // console.log('umdlib version: ' + parsed.version);
+  process.stdout.write(`${boilerlib} version: ${parsed.version}\n`);
   process.exit(0);
 }
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="">
+    <script src="../lib/es6umd.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <h1 class="title">???</h1>
+      <ul>
+        <li class="string">???</li>
+        <li class="array">???</li>
+      </ul>
+    </div>
+    <script>
+      window.onload = function() {
+        var es5 = new ES6UMD()
+          , s
+          ;
+
+        // Adds the title:
+        el = document.querySelector('.title');
+        el.innerHTML ='Hello!';
+
+        // Insert the text returned:
+        el = document.querySelector('.string');
+        s = es5.getString();
+        if (s) el.innerHTML = s;
+
+        el = document.querySelector('.array');
+        s = es5.getArray();
+        if (s) el.innerHTML = s;
+
+      };
+    </script>
+  </body>
+</html>

@@ -1,86 +1,87 @@
-/* eslint one-var: 0, prefer-arrow-callback: 0, import/no-extraneous-dependencies: 0,
-  semi-style: 0 */
+/* eslint one-var: 0, import/no-extraneous-dependencies: 0, semi-style: 0,
+  object-curly-newline: 0 */
+
 
 // -- Node modules
-const del         = require('del')
-    , gulp        = require('gulp')
-    , concat      = require('gulp-concat')
-    , header      = require('gulp-header')
-    , replace     = require('gulp-replace')
-    , runSequence = require('run-sequence')
-    , uglify      = require('gulp-uglify')
+const { src, dest, series, parallel } = require('gulp')
+    , del     = require('del')
+    , concat  = require('gulp-concat')
+    , header  = require('gulp-header')
+    , replace = require('gulp-replace')
+    , uglify  = require('gulp-uglify')
     ;
+
 
 // -- Local modules
 const config = require('./config')
     , pack   = require('../package.json')
     ;
 
+
 // -- Local constants
 const { dist }     = config
     , { libdir }   = config
-    // , { libname }  = config
-    // , { noparent } = config
-    , { name }         = pack
+    , { libname }  = config
+    , name         = libname.replace(/\s+/g, '').toLowerCase()
     , { license }  = config
     ;
+
 
 // -- Local variables
 
 
-// -- Gulp Tasks
+// -- Gulp Private Tasks
 
-// Remove previous dist:
-gulp.task('deldist', function() {
-  return del.sync(dist);
-});
+// Removes the previous dist.
+function deldist(done) {
+  del.sync(dist);
+  done();
+}
 
-// Copy README and LICENSE:
-gulp.task('skeleton', function() {
-  return gulp.src(['README.md', 'LICENSE.md'])
-    .pipe(gulp.dest(dist));
-});
+// Copies README and LICENSE.
+function doskeleton() {
+  return src(['README.md', 'LICENSE.md'])
+    .pipe(dest(dist));
+}
 
-// Copy the development version:
-gulp.task('copydev', function() {
-  return gulp.src(`${libdir}/${name}.js`)
+// Copies the development version.
+function copydev() {
+  return src(`${libdir}/${name}.js`)
     .pipe(header(license))
-    .pipe(replace('{{lib:name}}', `${name}`))
+    .pipe(replace('{{lib:name}}', `${libname}`))
     .pipe(replace('{{lib:version}}', pack.version))
     .pipe(replace('{{lib:description}}', pack.description))
     .pipe(replace('{{lib:author}}', pack.author.name))
     .pipe(replace('{{lib:email}}', pack.author.email))
     .pipe(replace('{{lib:url}}', pack.author.url))
-    .pipe(gulp.dest(dist));
-});
+    .pipe(dest(dist));
+}
 
 // Copy the development version:
-gulp.task('copymap', function() {
-  return gulp.src(`${libdir}/${name}.js.map`)
-    .pipe(gulp.dest(dist));
-});
+function copymap() {
+  return src(`${libdir}/${name}.js.map`)
+    .pipe(dest(dist));
+}
 
-// Create the minified version:
-gulp.task('makeminified', function() {
-  return gulp.src(`${libdir}/${name}.js`)
+// Creates the minified version.
+function makeminified() {
+  return src(`${libdir}/${name}.js`)
     .pipe(uglify())
     .pipe(header(license))
-    .pipe(replace('{{lib:name}}', `${name}`))
+    .pipe(replace('{{lib:name}}', `${libname}`))
     .pipe(replace('{{lib:version}}', pack.version))
     .pipe(replace('{{lib:description}}', pack.description))
     .pipe(replace('{{lib:author}}', pack.author.name))
     .pipe(replace('{{lib:email}}', pack.author.email))
     .pipe(replace('{{lib:url}}', pack.author.url))
     .pipe(concat(`${name}.min.js`))
-    .pipe(gulp.dest(dist));
-});
+    .pipe(dest(dist));
+}
 
 
-// -- Gulp Main Task:
-gulp.task('builddist', function(callback) {
-  runSequence(
-    'deldist',
-    ['skeleton', 'copydev', 'copymap', 'makeminified'],
-    callback,
-  );
-});
+// -- Gulp Public Task(s):
+
+module.exports = series(
+  deldist,
+  parallel(doskeleton, copydev, copymap, makeminified),
+);

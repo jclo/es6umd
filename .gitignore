@@ -1,6 +1,5 @@
 .DS_Store
 __trash
-_dist
 .nyc_output
 coverage
 docs/_book

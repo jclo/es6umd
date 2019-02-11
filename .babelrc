@@ -1,13 +1,11 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions", "ie 9"]
-      },
-      "test": {
-        "plugins": [ "istanbul" ]
-      }
-    }]
+    "@babel/preset-env",
   ],
-  "plugins": ["add-module-exports"]
+  "plugins": ["add-module-exports"],
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  }
 }

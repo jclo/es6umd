@@ -1,14 +1,4 @@
-# ES6UMD
-
-[![NPM version][npm-image]][npm-url]
-[![Travis CI][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![Dependencies status][dependencies-image]][dependencies-url]
-[![Dev Dependencies status][devdependencies-image]][devdependencies-url]
-[![License][license-image]](LICENSE.md)
-<!--- [![node version][node-image]][node-url] -->
-
-[![NPM install][npm-install-image]][npm-install-url]
+# Guide
 
 ES6UMD is a template for writing micro ES6 Javascript libraries that run both on Node.js and the browser.
 
@@ -139,29 +129,3 @@ On the browser, pick-up the Javascript file `_dist/<name of your library>.js` an
 ```
 
 Enjoy!
-
-## License
-
-[MIT](LICENSE.md).
-
-<!--- URls -->
-
-[npm-image]: https://img.shields.io/npm/v/es6umd.svg?style=flat-square
-[npm-install-image]: https://nodei.co/npm/es6umd.png?compact=true
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/es6umd.svg?style=flat-square
-[travis-image]: https://img.shields.io/travis/jclo/es6umd.svg?style=flat-square
-[coveralls-image]: https://img.shields.io/coveralls/jclo/es6umd/master.svg?style=flat-square
-[dependencies-image]: https://david-dm.org/jclo/es6umd/status.svg?theme=shields.io
-[devdependencies-image]: https://david-dm.org/jclo/es6umd/dev-status.svg?theme=shields.io
-[license-image]: https://img.shields.io/npm/l/es6umd.svg?style=flat-square
-
-[npm-url]: https://www.npmjs.com/package/es6umd
-[npm-install-url]: https://nodei.co/npm/es6umd
-[node-url]: http://nodejs.org/download
-[download-url]: https://www.npmjs.com/package/es6umd
-[travis-url]: https://travis-ci.org/jclo/es6umd
-[coveralls-url]: https://coveralls.io/github/jclo/es6umd?branch=master
-[dependencies-url]: https://david-dm.org/jclo/es6umd
-[devdependencies-url]: https://david-dm.org/jclo/es6umd?type=dev
-[license-url]: http://opensource.org/licenses/MIT
