@@ -1,5 +1,5 @@
 /** ****************************************************************************
- * ES6UMD v0.7.0
+ * ES6UMD v0.7.1
  *
  * A template for writing micro ES6 Javascript libraries.
  * (you can download it from npm or github repositories)

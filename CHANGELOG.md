@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.7.1 (March 29, 2019)
+
+  * Updated the dependencies,
+  * ...,
+
+
 ### 0.7.0 (February 11, 2019)
 
   * Updated the project with Babel 7 and Gulp 4,
