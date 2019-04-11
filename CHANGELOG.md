@@ -3,7 +3,7 @@
 ### 0.7.2 (April 11, 2019)
 
   * Removed the deprecated Gulp Util package,
-  * ...,
+  * Release.
 
 
 ### 0.7.1 (March 29, 2019)
