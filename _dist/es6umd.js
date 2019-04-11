@@ -1,5 +1,5 @@
-/** ****************************************************************************
- * ES6UMD v0.7.1
+/*! ****************************************************************************
+ * ES6UMD v0.7.2
  *
  * A template for writing micro ES6 Javascript libraries.
  * (you can download it from npm or github repositories)
@@ -13,15 +13,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _main = _interopRequireDefault(require("./src/main"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _default = _main.default;
-exports.default = _default;
-module.exports = exports.default;
+var _default = _main["default"];
+exports["default"] = _default;
 
 },{"./src/main":3}],2:[function(require,module,exports){
 "use strict";
@@ -29,7 +28,7 @@ module.exports = exports.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 /** ****************************************************************************
  *
@@ -77,8 +76,7 @@ var lib = {
   }
 };
 var _default = lib;
-exports.default = _default;
-module.exports = exports.default;
+exports["default"] = _default;
 
 },{}],3:[function(require,module,exports){
 "use strict";
@@ -86,11 +84,11 @@ module.exports = exports.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _lib = _interopRequireDefault(require("./lib"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -126,7 +124,7 @@ function () {
   _createClass(ES6UMD, [{
     key: "getArray",
     value: function getArray() {
-      return _lib.default.array();
+      return _lib["default"].array();
     }
     /**
      * Returns a string.
@@ -141,7 +139,7 @@ function () {
   }, {
     key: "getString",
     value: function getString() {
-      return _lib.default.string();
+      return _lib["default"].string();
     }
   }]);
 
@@ -149,8 +147,7 @@ function () {
 }();
 
 var _default = ES6UMD;
-exports.default = _default;
-module.exports = exports.default;
+exports["default"] = _default;
 
 },{"./lib":2}]},{},[1])(1)
 });

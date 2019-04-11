@@ -25,7 +25,7 @@ module.exports = {
     // The name to expose outside the module:
     exportname: 'ES6UMD',
   },
-  license: ['/** ****************************************************************************',
+  license: ['/*! ****************************************************************************',
     ' * {{lib:name}} v{{lib:version}}',
     ' *',
     ' * {{lib:description}}.',

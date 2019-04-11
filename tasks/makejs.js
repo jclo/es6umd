@@ -1,4 +1,5 @@
-/* eslint  one-var: 0, import/no-extraneous-dependencies: 0, semi-style: 0 */
+/* eslint  one-var: 0, import/no-extraneous-dependencies: 0, semi-style: 0,
+  no-console: 0 */
 
 
 // -- Node modules
@@ -7,7 +8,6 @@ const { dest, series } = require('gulp')
     , browserify   = require('browserify')
     , del          = require('del')
     , sourcemaps   = require('gulp-sourcemaps')
-    , gutil        = require('gulp-util')
     , buffer       = require('vinyl-buffer')
     , sourcestream = require('vinyl-source-stream')
     , watchify     = require('watchify')
@@ -49,7 +49,7 @@ function build() {
 
   return b.bundle()
     // Log errors if they happen.
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .on('error', (err) => { console.log(err); this.emit('end'); })
     .pipe(sourcestream(`${name}.js`))
     // Optionnal, remove if you don't want sourcemaps.
     .pipe(buffer())
@@ -74,7 +74,7 @@ function watch(done) {
   function rebuild() {
     b.bundle()
       // Log errors if they happen.
-      .on('error', gutil.log)
+      .on('error', (err) => { console.log(err); this.emit('end'); })
       .pipe(sourcestream(`${name}.js`))
       // Optionnal, remove if you don't want sourcemaps.
       .pipe(buffer())
@@ -88,7 +88,7 @@ function watch(done) {
 
   // On any update, run the bundler and output build logs to the terminal.
   b.on('update', build);
-  b.on('log', gutil.log);
+  b.on('log', (log) => { console.log(log); });
 
   rebuild();
   done();

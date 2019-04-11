@@ -1,5 +1,11 @@
 ### HEAD
 
+### 0.7.2 (April 11, 2019)
+
+  * Removed the deprecated Gulp Util package,
+  * ...,
+
+
 ### 0.7.1 (March 29, 2019)
 
   * Updated the dependencies,
